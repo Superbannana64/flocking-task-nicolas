@@ -11,12 +11,12 @@ Vector2 SeparationRule::computeForce(const std::vector<Boid*>& neighborhood, Boi
 
     for (int i = 0; i < neighborhood.size(); i++)
     {
-        distance = Vector2::getDistance(boid->transform.position, neighborhood[i]->transform.position);
+        offset = boid->getPosition() - neighborhood[i]->getPosition();
+        distance = offset.getMagnitude();
+
         if (distance < desiredMinimalDistance && distance > 0)
         {
-            offset = Vector2{ boid->transform.position.x - neighborhood[i]->transform.position.x, boid->transform.position.y - neighborhood[i]->transform.position.y };
-            offset = Vector2::normalized(offset);
-            force = { offset.x /= distance, offset.y /= distance };
+            force = offset / distance;
             separatingForce.x += force.x;
             separatingForce.y += force.y;
         }
